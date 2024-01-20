@@ -134,7 +134,7 @@ std::string NormalizeString(std::string_view src)
     return res;
 }
 
-std::vector<uint8_t> Mnemonic::CreateSeed(std::string_view mnemonic, std::string_view passphrase)
+std::vector<uint8_t> Mnemonic::CreateSeedFromMnemonic(std::string_view mnemonic, std::string_view passphrase)
 {
     // Normalize mnemonic and passphrase
     std::string normalizedMnemonic = NormalizeString(std::string(mnemonic));
@@ -154,17 +154,17 @@ std::vector<uint8_t> Mnemonic::CreateSeed(std::string_view mnemonic, std::string
     return out;
 }
 
-// std::vector<uint8_t> Mnemonic::CreateSeed(std::string_view passphrase, std::string_view lang) const
-// {
-//     std::string salt = NormalizeString(std::string(u8"mnemonic") + std::string(passphrase));
-//     int const out_len{512 / 8};
-//     std::vector<uint8_t> out(out_len);
-//     std::string words = NormalizeString(GenerateWords(GetWordList(std::string(lang)), GetDelimiterByLang(lang)));
-//     int res = PKCS5_PBKDF2_HMAC(words.c_str(), words.size(), reinterpret_cast<uint8_t const*>(salt.c_str()), salt.size(), 2048, EVP_sha512(), out_len, out.data());
-//     if (1 != res) {
-//         throw std::runtime_error("failed to run algorithm: PBKDF2");
-//     }
-//     return out;
-// }
+std::vector<uint8_t> Mnemonic::CreateSeed(std::string_view passphrase, std::string_view lang) const
+{
+    std::string salt = NormalizeString(std::string(u8"mnemonic") + std::string(passphrase));
+    int const out_len{512 / 8};
+    std::vector<uint8_t> out(out_len);
+    std::string words = NormalizeString(GenerateWords(GetWordList(std::string(lang)), GetDelimiterByLang(lang)));
+    int res = PKCS5_PBKDF2_HMAC(words.c_str(), words.size(), reinterpret_cast<uint8_t const*>(salt.c_str()), salt.size(), 2048, EVP_sha512(), out_len, out.data());
+    if (1 != res) {
+        throw std::runtime_error("failed to run algorithm: PBKDF2");
+    }
+    return out;
+}
 
 } // namespace bip39

@@ -20,7 +20,7 @@ public:
 
     static bool IsValidMnemonic(std::string_view passphrase, std::string const& lang = "english");
 
-    static std::vector<uint8_t> CreateSeed(std::string_view mnemonic, std::string_view passphrase);
+    static std::vector<uint8_t> CreateSeedFromMnemonic(std::string_view mnemonic, std::string_view passphrase);
 
     explicit Mnemonic(std::vector<uint8_t> entropy);
 
@@ -30,7 +30,7 @@ public:
 
     std::vector<uint8_t> const& GetEntropyData() const;
 
-    // std::vector<uint8_t> CreateSeed(std::string_view passphrase, std::string_view lang = "english") const;
+    std::vector<uint8_t> CreateSeed(std::string_view passphrase, std::string_view lang = "english") const;
 
 private:
     std::vector<uint8_t> entropy_;
