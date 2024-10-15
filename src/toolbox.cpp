@@ -70,7 +70,11 @@ std::string GenerateWords(std::vector<std::string> const& word_list, std::string
 
 std::string GetDelimiterByLang(std::string_view lang)
 {
-    return (lang == "japanese") ? u8"\u3000" : u8"\u0020";
+    if (lang == "japanese") {
+            return "\xe3\x80\x80"; // UTF-8 encoding of U+3000 (ideographic space)
+        } else {
+            return " ";
+        }
 }
 
 } // namespace bip39

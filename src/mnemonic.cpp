@@ -77,7 +77,6 @@ Mnemonic::Mnemonic(WordList const& word_list, std::string const& lang)
         throw std::runtime_error("invalid number of words to convert");
     }
     Bits bits;
-    auto it = langs.find(lang);
     if (!utils::LangExists(lang)) {
         throw std::runtime_error("invalid lang name");
     }
@@ -156,7 +155,7 @@ std::vector<uint8_t> Mnemonic::CreateSeedFromMnemonic(std::string_view mnemonic,
 
 std::vector<uint8_t> Mnemonic::CreateSeed(std::string_view passphrase, std::string_view lang) const
 {
-    std::string salt = NormalizeString(std::string(u8"mnemonic") + std::string(passphrase));
+    std::string salt = NormalizeString(std::string("mnemonic") + std::string(passphrase));
     int const out_len{512 / 8};
     std::vector<uint8_t> out(out_len);
     std::string words = NormalizeString(GenerateWords(GetWordList(std::string(lang)), GetDelimiterByLang(lang)));
